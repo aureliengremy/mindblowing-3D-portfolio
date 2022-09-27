@@ -79,7 +79,7 @@ deathStar.position.set(10,2,20)
 scene.add( deathStar );
 
 
-function moveCamera() {
+function moveCameraStart() {
 
   const moveFromTop = document.body.getBoundingClientRect().top;
   // console.log(moveFromTop)
@@ -93,14 +93,48 @@ function moveCamera() {
   camera.position.z += moveFromTop * -0.0001;
   camera.position.x += moveFromTop * -0.0000002;
   camera.position.y += moveFromTop * -0.0000002;
-  console.log(moveFromTop)
-  if(moveFromTop > 1){
-    console.log('moveFromTop = 0' )
-  }
-  console.log(camera.position)
+  // console.log("Start: " + moveFromTop)
+  // if(moveFromTop > 1){
+  //   console.log('moveFromTop = 0' )
+  // }
+  // console.log(camera.position)
 
 }
-document.body.onscroll = moveCamera;
+function moveCameraBack() {
+
+  const moveFromTop = document.body.getBoundingClientRect().top;
+  // console.log(moveFromTop)
+  deathStar.rotation.x -= 0.001;
+  deathStar.rotation.y -= 0.05;
+  deathStar.rotation.z -= 0.0001;
+
+  myself.rotation.x -= 0.01;
+  myself.rotation.y -= 0.01;
+
+  camera.position.z += moveFromTop * 0.0001;
+  camera.position.x += moveFromTop * 0.0000001;
+  camera.position.y += moveFromTop * 0.0000001;
+  // console.log("back: "+ moveFromTop)
+  // if(moveFromTop > 1){
+  //   console.log('moveFromTop = 0' )
+  // }
+  // console.log(camera.position)
+
+}
+var lastScrollTop = 0;
+const scrollFrom = () => { // or window.addEventListener("scroll"....
+  var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+  if (st > lastScrollTop){
+    // console.log(lastScrollTop)
+    // console.log(document.documentElement.scrollTop)
+     moveCameraStart()
+  } else {
+     moveCameraBack()
+  }
+  lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+};
+
+document.body.onscroll = scrollFrom;
 
 
 
